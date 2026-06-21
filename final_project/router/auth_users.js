@@ -19,7 +19,7 @@ const authenticatedUser = (username, password) => {
   return validusers.length > 0;
 }
 
-// only registered users can login
+// Login
 regd_users.post("/login", (req, res) => {
 
   const username = req.body.username;
@@ -46,7 +46,9 @@ regd_users.post("/login", (req, res) => {
       username
     };
 
-    return res.status(200).send("Customer successfully logged in.");
+    return res.status(200).json({
+      message: "Login successful"
+    });
   }
 
   return res.status(208).json({
@@ -54,7 +56,7 @@ regd_users.post("/login", (req, res) => {
   });
 });
 
-// Add or modify a book review
+// Add / Modify Review
 regd_users.put("/auth/review/:isbn", (req, res) => {
 
   let isbn = req.params.isbn;
@@ -64,11 +66,12 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   books[isbn].reviews[username] = review;
 
   return res.status(200).json({
-    message: "Review added/modified successfully"
+    message: "Review added/updated successfully",
+    reviews: books[isbn].reviews
   });
 });
 
-// Delete a book review
+// Delete Review
 regd_users.delete("/auth/review/:isbn", (req, res) => {
 
   let isbn = req.params.isbn;
